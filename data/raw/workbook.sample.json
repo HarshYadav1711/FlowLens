@@ -5,6 +5,12 @@
       "developer_name": "Aarav Mehta",
       "team_name": "Checkout",
       "manager_name": "Nisha Rao"
+    },
+    {
+      "developer_id": "dev-002",
+      "developer_name": "Isha Nair",
+      "team_name": "Growth",
+      "manager_name": "Rahul Sen"
     }
   ],
   "fact_jira_issues": [
@@ -13,6 +19,30 @@
       "developer_id": "dev-001",
       "in_progress_at": "2026-03-04T10:00:00Z",
       "done_at": "2026-03-06T17:00:00Z"
+    },
+    {
+      "issue_id": "J-102",
+      "developer_id": "dev-001",
+      "in_progress_at": "2026-03-10T09:00:00Z",
+      "done_at": "2026-03-15T18:00:00Z"
+    },
+    {
+      "issue_id": "J-103",
+      "developer_id": "dev-001",
+      "in_progress_at": "2026-04-03T09:00:00Z",
+      "done_at": "2026-04-06T11:00:00Z"
+    },
+    {
+      "issue_id": "J-201",
+      "developer_id": "dev-002",
+      "in_progress_at": "2026-03-02T10:00:00Z",
+      "done_at": "2026-03-04T15:00:00Z"
+    },
+    {
+      "issue_id": "J-202",
+      "developer_id": "dev-002",
+      "in_progress_at": "2026-04-08T10:00:00Z",
+      "done_at": "2026-04-14T15:00:00Z"
     }
   ],
   "fact_pull_requests": [
@@ -22,6 +52,34 @@
       "opened_at": "2026-03-05T09:00:00Z",
       "first_review_at": "2026-03-05T13:00:00Z",
       "merged_at": "2026-03-06T11:00:00Z"
+    },
+    {
+      "pr_id": "PR-102",
+      "developer_id": "dev-001",
+      "opened_at": "2026-03-11T09:00:00Z",
+      "first_review_at": "2026-03-12T15:00:00Z",
+      "merged_at": "2026-03-14T12:00:00Z"
+    },
+    {
+      "pr_id": "PR-103",
+      "developer_id": "dev-001",
+      "opened_at": "2026-04-03T09:00:00Z",
+      "first_review_at": "2026-04-04T15:00:00Z",
+      "merged_at": "2026-04-05T12:00:00Z"
+    },
+    {
+      "pr_id": "PR-201",
+      "developer_id": "dev-002",
+      "opened_at": "2026-03-02T09:00:00Z",
+      "first_review_at": "2026-03-02T11:00:00Z",
+      "merged_at": "2026-03-03T10:00:00Z"
+    },
+    {
+      "pr_id": "PR-202",
+      "developer_id": "dev-002",
+      "opened_at": "2026-04-08T09:00:00Z",
+      "first_review_at": "2026-04-08T12:00:00Z",
+      "merged_at": "2026-04-12T14:00:00Z"
     }
   ],
   "fact_ci_deployments": [
@@ -32,6 +90,46 @@
       "status": "success",
       "environment": "production",
       "lead_time_days": 2.4
+    },
+    {
+      "deployment_id": "D-102",
+      "developer_id": "dev-001",
+      "completed_at": "2026-03-16T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "lead_time_days": 4.6
+    },
+    {
+      "deployment_id": "D-103",
+      "developer_id": "dev-001",
+      "completed_at": "2026-03-20T08:30:00Z",
+      "status": "failed",
+      "environment": "production",
+      "lead_time_days": 6.1
+    },
+    {
+      "deployment_id": "D-104",
+      "developer_id": "dev-001",
+      "completed_at": "2026-04-07T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "lead_time_days": 3.5
+    },
+    {
+      "deployment_id": "D-201",
+      "developer_id": "dev-002",
+      "completed_at": "2026-03-05T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "lead_time_days": 2.0
+    },
+    {
+      "deployment_id": "D-202",
+      "developer_id": "dev-002",
+      "completed_at": "2026-04-16T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "lead_time_days": 4.8
     }
   ],
   "fact_bug_reports": [
@@ -40,6 +138,30 @@
       "developer_id": "dev-001",
       "escaped_to_prod": false,
       "month_found": "2026-03"
+    },
+    {
+      "bug_id": "B-102",
+      "developer_id": "dev-001",
+      "escaped_to_prod": true,
+      "month_found": "2026-03"
+    },
+    {
+      "bug_id": "B-103",
+      "developer_id": "dev-001",
+      "escaped_to_prod": false,
+      "month_found": "2026-04"
+    },
+    {
+      "bug_id": "B-201",
+      "developer_id": "dev-002",
+      "escaped_to_prod": false,
+      "month_found": "2026-03"
+    },
+    {
+      "bug_id": "B-202",
+      "developer_id": "dev-002",
+      "escaped_to_prod": true,
+      "month_found": "2026-04"
     }
   ]
 }

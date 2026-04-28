@@ -5,6 +5,12 @@
       "name": "Aarav Mehta",
       "team": "Checkout",
       "manager": "Nisha Rao"
+    },
+    {
+      "developerId": "dev-002",
+      "name": "Isha Nair",
+      "team": "Growth",
+      "manager": "Rahul Sen"
     }
   ],
   "issues": [
@@ -13,6 +19,30 @@
       "developerId": "dev-001",
       "inProgressAt": "2026-03-04T10:00:00Z",
       "doneAt": "2026-03-06T17:00:00Z"
+    },
+    {
+      "issueId": "J-102",
+      "developerId": "dev-001",
+      "inProgressAt": "2026-03-10T09:00:00Z",
+      "doneAt": "2026-03-15T18:00:00Z"
+    },
+    {
+      "issueId": "J-103",
+      "developerId": "dev-001",
+      "inProgressAt": "2026-04-03T09:00:00Z",
+      "doneAt": "2026-04-06T11:00:00Z"
+    },
+    {
+      "issueId": "J-201",
+      "developerId": "dev-002",
+      "inProgressAt": "2026-03-02T10:00:00Z",
+      "doneAt": "2026-03-04T15:00:00Z"
+    },
+    {
+      "issueId": "J-202",
+      "developerId": "dev-002",
+      "inProgressAt": "2026-04-08T10:00:00Z",
+      "doneAt": "2026-04-14T15:00:00Z"
     }
   ],
   "pullRequests": [
@@ -22,6 +52,34 @@
       "openedAt": "2026-03-05T09:00:00Z",
       "firstReviewAt": "2026-03-05T13:00:00Z",
       "mergedAt": "2026-03-06T11:00:00Z"
+    },
+    {
+      "prId": "PR-102",
+      "developerId": "dev-001",
+      "openedAt": "2026-03-11T09:00:00Z",
+      "firstReviewAt": "2026-03-12T15:00:00Z",
+      "mergedAt": "2026-03-14T12:00:00Z"
+    },
+    {
+      "prId": "PR-103",
+      "developerId": "dev-001",
+      "openedAt": "2026-04-03T09:00:00Z",
+      "firstReviewAt": "2026-04-04T15:00:00Z",
+      "mergedAt": "2026-04-05T12:00:00Z"
+    },
+    {
+      "prId": "PR-201",
+      "developerId": "dev-002",
+      "openedAt": "2026-03-02T09:00:00Z",
+      "firstReviewAt": "2026-03-02T11:00:00Z",
+      "mergedAt": "2026-03-03T10:00:00Z"
+    },
+    {
+      "prId": "PR-202",
+      "developerId": "dev-002",
+      "openedAt": "2026-04-08T09:00:00Z",
+      "firstReviewAt": "2026-04-08T12:00:00Z",
+      "mergedAt": "2026-04-12T14:00:00Z"
     }
   ],
   "deployments": [
@@ -32,6 +90,46 @@
       "status": "success",
       "environment": "production",
       "leadTimeDays": 2.4
+    },
+    {
+      "deploymentId": "D-102",
+      "developerId": "dev-001",
+      "completedAt": "2026-03-16T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "leadTimeDays": 4.6
+    },
+    {
+      "deploymentId": "D-103",
+      "developerId": "dev-001",
+      "completedAt": "2026-03-20T08:30:00Z",
+      "status": "failed",
+      "environment": "production",
+      "leadTimeDays": 6.1
+    },
+    {
+      "deploymentId": "D-104",
+      "developerId": "dev-001",
+      "completedAt": "2026-04-07T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "leadTimeDays": 3.5
+    },
+    {
+      "deploymentId": "D-201",
+      "developerId": "dev-002",
+      "completedAt": "2026-03-05T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "leadTimeDays": 2
+    },
+    {
+      "deploymentId": "D-202",
+      "developerId": "dev-002",
+      "completedAt": "2026-04-16T08:30:00Z",
+      "status": "success",
+      "environment": "production",
+      "leadTimeDays": 4.8
     }
   ],
   "bugs": [
@@ -40,6 +138,30 @@
       "developerId": "dev-001",
       "escapedToProd": false,
       "monthFound": "2026-03"
+    },
+    {
+      "bugId": "B-102",
+      "developerId": "dev-001",
+      "escapedToProd": true,
+      "monthFound": "2026-03"
+    },
+    {
+      "bugId": "B-103",
+      "developerId": "dev-001",
+      "escapedToProd": false,
+      "monthFound": "2026-04"
+    },
+    {
+      "bugId": "B-201",
+      "developerId": "dev-002",
+      "escapedToProd": false,
+      "monthFound": "2026-03"
+    },
+    {
+      "bugId": "B-202",
+      "developerId": "dev-002",
+      "escapedToProd": true,
+      "monthFound": "2026-04"
     }
   ]
 }
