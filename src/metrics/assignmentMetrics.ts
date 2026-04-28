@@ -75,6 +75,31 @@ function filterDeploymentsByDeveloperAndMonth(
   );
 }
 
+function findFallbackLeadTimeDays(
+  deployment: DeploymentFact,
+  pullRequests: PullRequestFact[],
+  successfulDeployments: DeploymentFact[],
+  developerId: string,
+): number | null {
+  const deploymentTime = new Date(deployment.completedAt).getTime();
+  const candidatePullRequests = pullRequests
+    .filter((pr) => pr.developerId === developerId && new Date(pr.mergedAt).getTime() <= deploymentTime)
+    .sort((a, b) => new Date(b.mergedAt).getTime() - new Date(a.mergedAt).getTime());
+
+  for (const pr of candidatePullRequests) {
+    const mergedTime = new Date(pr.mergedAt).getTime();
+    const firstDeploymentAfterMerge = successfulDeployments
+      .filter((item) => new Date(item.completedAt).getTime() >= mergedTime)
+      .sort((a, b) => new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime())[0];
+
+    if (firstDeploymentAfterMerge?.deploymentId === deployment.deploymentId) {
+      return daysBetween(pr.openedAt, deployment.completedAt);
+    }
+  }
+
+  return null;
+}
+
 function filterBugsByDeveloperAndMonth(
   bugs: BugFact[],
   developerId: string,
@@ -87,9 +112,22 @@ export function calculateLeadTimeForChangesDays(
   deployments: DeploymentFact[],
   developerId: string,
   month: string,
+  pullRequests: PullRequestFact[] = [],
 ): number {
   const rows = filterDeploymentsByDeveloperAndMonth(deployments, developerId, month);
-  return roundToSingleDecimal(average(rows.map((row) => row.leadTimeDays)));
+  const leadTimes = rows
+    .map((row) => {
+      // Fast path: use workbook-provided lead time when available.
+      if (typeof row.leadTimeDays === "number") {
+        return row.leadTimeDays;
+      }
+
+      // Fallback path: PR openedAt -> first successful deployment after merge.
+      return findFallbackLeadTimeDays(row, pullRequests, rows, developerId);
+    })
+    .filter((value): value is number => value !== null);
+
+  return roundToSingleDecimal(average(leadTimes));
 }
 
 export function calculateCycleTimeDays(
@@ -146,6 +184,7 @@ export function calculateAssignmentMetrics(
       workbook.deployments,
       developerId,
       month,
+      workbook.pullRequests,
     ),
     cycleTimeDays: calculateCycleTimeDays(workbook.issues, developerId, month),
     bugRate: calculateBugRate(workbook.bugs, workbook.issues, developerId, month),

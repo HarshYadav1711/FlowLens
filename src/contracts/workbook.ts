@@ -28,7 +28,7 @@ export const rawDeploymentSchema = z.object({
   completed_at: z.string(),
   status: z.enum(["success", "failed"]),
   environment: z.enum(["staging", "production"]),
-  lead_time_days: z.number(),
+  lead_time_days: z.number().optional(),
 });
 
 export const rawBugSchema = z.object({

@@ -117,4 +117,34 @@ describe("assignment metrics", () => {
     expect(calculateDeploymentFrequency(workbookRows.deployments, "dev-001", month)).toBe(0);
     expect(calculatePrThroughput(workbookRows.pullRequests, "dev-001", month)).toBe(0);
   });
+
+  it("falls back to PR openedAt -> first successful deployment after merge when lead time is missing", () => {
+    const metrics = calculateAssignmentMetrics(
+      {
+        ...workbookRows,
+        deployments: [
+          {
+            deploymentId: "D-201",
+            developerId: "dev-001",
+            completedAt: "2026-03-08T00:00:00Z",
+            status: "success",
+            environment: "production",
+          },
+        ],
+        pullRequests: [
+          {
+            prId: "PR-201",
+            developerId: "dev-001",
+            openedAt: "2026-03-05T00:00:00Z",
+            firstReviewAt: "2026-03-05T10:00:00Z",
+            mergedAt: "2026-03-06T00:00:00Z",
+          },
+        ],
+      },
+      "dev-001",
+      "2026-03",
+    );
+
+    expect(metrics.leadTimeForChangesDays).toBe(3);
+  });
 });
