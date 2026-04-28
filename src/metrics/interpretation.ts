@@ -53,15 +53,15 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
     notes.push("Flow looks steady, with cycle and lead time both in a manageable range.");
   }
 
-  if (metrics.bugRatePercent >= 30) {
+  if (metrics.bugRate >= 0.3) {
     notes.push(
-      "Quality risk is visible this month because a higher share of bugs escaped to production.",
+      "Quality risk is visible this month because escaped production bugs are high relative to completed issue volume.",
     );
     pushIfMissing(
       actions,
       "Pick the top escaped bug pattern and add one targeted pre-merge check or test for that exact failure.",
     );
-  } else if (metrics.bugRatePercent > 0) {
+  } else if (metrics.bugRate > 0) {
     notes.push("Quality is mixed: most changes are stable, but a few issues still escaped.");
     pushIfMissing(
       actions,

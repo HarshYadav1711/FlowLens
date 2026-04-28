@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { NormalizedWorkbook } from "../contracts/normalized";
 import {
   calculateAssignmentMetrics,
-  calculateBugRatePercent,
+  calculateBugRate,
   calculateCycleTimeDays,
   calculateDeploymentFrequency,
   calculateLeadTimeForChangesDays,
@@ -104,7 +104,7 @@ describe("assignment metrics", () => {
 
     expect(metrics.leadTimeForChangesDays).toBe(3);
     expect(metrics.cycleTimeDays).toBe(3);
-    expect(metrics.bugRatePercent).toBe(50);
+    expect(metrics.bugRate).toBe(0.5);
     expect(metrics.deploymentFrequency).toBe(2);
     expect(metrics.prThroughput).toBe(2);
   });
@@ -113,7 +113,7 @@ describe("assignment metrics", () => {
     const month = "2026-04";
     expect(calculateLeadTimeForChangesDays(workbookRows.deployments, "dev-001", month)).toBe(0);
     expect(calculateCycleTimeDays(workbookRows.issues, "dev-001", month)).toBe(0);
-    expect(calculateBugRatePercent(workbookRows.bugs, "dev-001", month)).toBe(0);
+    expect(calculateBugRate(workbookRows.bugs, workbookRows.issues, "dev-001", month)).toBe(0);
     expect(calculateDeploymentFrequency(workbookRows.deployments, "dev-001", month)).toBe(0);
     expect(calculatePrThroughput(workbookRows.pullRequests, "dev-001", month)).toBe(0);
   });

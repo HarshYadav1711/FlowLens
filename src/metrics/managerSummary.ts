@@ -7,7 +7,7 @@ export type ManagerSummary = {
   activeDevelopers: number;
   avgLeadTimeDays: number;
   avgCycleTimeDays: number;
-  avgBugRatePercent: number;
+  avgBugRate: number;
   healthSignal: "On track" | "Watch" | "Needs support";
   helpNote: string;
 };
@@ -42,7 +42,7 @@ export function summarizeTeamMonth(
       activeDevelopers: 0,
       avgLeadTimeDays: 0,
       avgCycleTimeDays: 0,
-      avgBugRatePercent: 0,
+      avgBugRate: 0,
       healthSignal: "Watch",
       helpNote:
         "No developers are mapped to this team in the dataset. Check team mapping before reviewing health.",
@@ -59,19 +59,19 @@ export function summarizeTeamMonth(
   const avgCycleTimeDays = roundToSingleDecimal(
     average(teamMetrics.map((metrics) => metrics.cycleTimeDays)),
   );
-  const avgBugRatePercent = roundToSingleDecimal(
-    average(teamMetrics.map((metrics) => metrics.bugRatePercent)),
+  const avgBugRate = roundToSingleDecimal(
+    average(teamMetrics.map((metrics) => metrics.bugRate)),
   );
 
   let healthSignal: ManagerSummary["healthSignal"] = "On track";
   let helpNote =
     "No immediate risk is visible. Keep the team rhythm and review one improvement each sprint.";
 
-  if (avgBugRatePercent >= 30 || avgLeadTimeDays >= 4.5 || avgCycleTimeDays >= 4.5) {
+  if (avgBugRate >= 0.3 || avgLeadTimeDays >= 4.5 || avgCycleTimeDays >= 4.5) {
     healthSignal = "Needs support";
     helpNote =
       "The team may need help reducing work-in-progress queueing and tightening pre-merge checks on high-risk changes.";
-  } else if (avgBugRatePercent >= 10 || avgLeadTimeDays >= 3.5 || avgCycleTimeDays >= 3.5) {
+  } else if (avgBugRate >= 0.1 || avgLeadTimeDays >= 3.5 || avgCycleTimeDays >= 3.5) {
     healthSignal = "Watch";
     helpNote =
       "Flow is mostly stable, but delay is starting to build. A short review of handoff and deployment waits could help.";
@@ -89,7 +89,7 @@ export function summarizeTeamMonth(
     activeDevelopers,
     avgLeadTimeDays,
     avgCycleTimeDays,
-    avgBugRatePercent,
+    avgBugRate,
     healthSignal,
     helpNote,
   };

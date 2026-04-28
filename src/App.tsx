@@ -11,7 +11,7 @@ type ScreenMode = "ic" | "manager";
 const kpiConfig = [
   { key: "leadTimeForChangesDays", label: "Lead time for changes", suffix: "days" },
   { key: "cycleTimeDays", label: "Cycle time", suffix: "days" },
-  { key: "bugRatePercent", label: "Bug rate", suffix: "%" },
+  { key: "bugRate", label: "Bug rate", suffix: "ratio" },
   { key: "deploymentFrequency", label: "Deployment frequency", suffix: "deployments" },
   { key: "prThroughput", label: "PR throughput", suffix: "merged PRs" },
 ] as const;
@@ -352,7 +352,7 @@ function App() {
                   <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                     <p className="text-xs uppercase tracking-wide text-slate-500">Avg bug rate</p>
                     <p className="mt-2 text-2xl font-semibold">
-                      {managerSummary.avgBugRatePercent}%
+                      {managerSummary.avgBugRate}
                     </p>
                   </article>
                 </section>

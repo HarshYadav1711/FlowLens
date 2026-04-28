@@ -6,7 +6,7 @@ describe("interpretAssignmentMetrics", () => {
     const result = interpretAssignmentMetrics({
       leadTimeForChangesDays: 5.2,
       cycleTimeDays: 4.6,
-      bugRatePercent: 40,
+      bugRate: 0.4,
       deploymentFrequency: 1,
       prThroughput: 4,
     });
@@ -21,7 +21,7 @@ describe("interpretAssignmentMetrics", () => {
     const result = interpretAssignmentMetrics({
       leadTimeForChangesDays: 0,
       cycleTimeDays: 0,
-      bugRatePercent: 0,
+      bugRate: 0,
       deploymentFrequency: 0,
       prThroughput: 0,
     });
@@ -34,7 +34,7 @@ describe("interpretAssignmentMetrics", () => {
     const result = interpretAssignmentMetrics({
       leadTimeForChangesDays: 2.2,
       cycleTimeDays: 2.1,
-      bugRatePercent: 0,
+      bugRate: 0,
       deploymentFrequency: 3,
       prThroughput: 4,
     });

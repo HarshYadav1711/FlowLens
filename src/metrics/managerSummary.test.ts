@@ -68,7 +68,7 @@ describe("summarizeTeamMonth", () => {
     expect(summary.activeDevelopers).toBe(2);
     expect(summary.avgLeadTimeDays).toBe(4.5);
     expect(summary.avgCycleTimeDays).toBe(3.5);
-    expect(summary.avgBugRatePercent).toBe(50);
+    expect(summary.avgBugRate).toBe(0.5);
     expect(summary.healthSignal).toBe("Needs support");
     expect(summary.helpNote.length).toBeGreaterThan(20);
   });
@@ -78,6 +78,7 @@ describe("summarizeTeamMonth", () => {
 
     expect(summary.activeDevelopers).toBe(0);
     expect(summary.avgLeadTimeDays).toBe(0);
+    expect(summary.avgBugRate).toBe(0);
     expect(summary.healthSignal).toBe("Watch");
   });
 });

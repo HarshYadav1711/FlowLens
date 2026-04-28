@@ -9,7 +9,7 @@ import type {
 export type AssignmentMetrics = {
   leadTimeForChangesDays: number;
   cycleTimeDays: number;
-  bugRatePercent: number;
+  bugRate: number;
   deploymentFrequency: number;
   prThroughput: number;
 };
@@ -102,17 +102,22 @@ export function calculateCycleTimeDays(
   return roundToSingleDecimal(average(cycleTimes));
 }
 
-export function calculateBugRatePercent(
+export function calculateBugRate(
   bugs: BugFact[],
+  issues: IssueFact[],
   developerId: string,
   month: string,
 ): number {
-  const rows = filterBugsByDeveloperAndMonth(bugs, developerId, month);
-  if (rows.length === 0) {
+  const escapedBugs = filterBugsByDeveloperAndMonth(bugs, developerId, month).filter(
+    (bug) => bug.escapedToProd,
+  ).length;
+  const completedIssuesCount = filterIssuesByDeveloperAndMonth(issues, developerId, month).length;
+
+  if (completedIssuesCount === 0) {
     return 0;
   }
-  const escapedCount = rows.filter((row) => row.escapedToProd).length;
-  return roundToSingleDecimal((escapedCount / rows.length) * 100);
+
+  return roundToSingleDecimal(escapedBugs / completedIssuesCount);
 }
 
 export function calculateDeploymentFrequency(
@@ -143,7 +148,7 @@ export function calculateAssignmentMetrics(
       month,
     ),
     cycleTimeDays: calculateCycleTimeDays(workbook.issues, developerId, month),
-    bugRatePercent: calculateBugRatePercent(workbook.bugs, developerId, month),
+    bugRate: calculateBugRate(workbook.bugs, workbook.issues, developerId, month),
     deploymentFrequency: calculateDeploymentFrequency(workbook.deployments, developerId, month),
     prThroughput: calculatePrThroughput(workbook.pullRequests, developerId, month),
   };
