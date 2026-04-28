@@ -44,7 +44,7 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
     );
     pushIfMissing(
       actions,
-      "Try splitting one upcoming story into smaller PR-sized slices so work reaches production in smaller batches.",
+      "For your next story, split delivery into two PRs under ~300 lines each and ship the first slice before starting the second.",
     );
   } else if (metrics.cycleTimeDays >= 4 && metrics.leadTimeForChangesDays < 4) {
     notes.push(
@@ -52,7 +52,7 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
     );
     pushIfMissing(
       actions,
-      "For the next two issues, define a narrower done condition up front to reduce time spent in progress.",
+      "Before starting the next two issues, write a one-line done condition and one non-goal so implementation scope stays tight.",
     );
   } else if (metrics.cycleTimeDays < 4 && metrics.leadTimeForChangesDays >= 4) {
     notes.push(
@@ -60,7 +60,7 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
     );
     pushIfMissing(
       actions,
-      "Review one recent merged PR timeline with CI/deployment steps and remove the biggest recurring wait.",
+      "Map one recent PR timeline from merge to production and remove the single longest wait step in CI or release handoff this sprint.",
     );
   } else {
     notes.push("Flow looks steady, with both cycle time and lead time in a manageable range.");
@@ -72,13 +72,13 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
     );
     pushIfMissing(
       actions,
-      "Pick the top escaped bug pattern and add one targeted pre-merge check or test for that exact failure.",
+      "Choose the most recent escaped bug and add one targeted pre-merge test or checklist step that would have caught that exact failure.",
     );
   } else if (metrics.bugRate > 0) {
     notes.push("Quality is mixed: most changes are stable, but a few issues still escaped.");
     pushIfMissing(
       actions,
-      "During review, call out one risk area explicitly and verify it before merging.",
+      "In each PR review this week, name one risk area explicitly and require a matching verification note before merge.",
     );
   } else {
     notes.push("Quality signal is strong, with no escaped bugs in the selected month.");
@@ -90,19 +90,19 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
     );
     pushIfMissing(
       actions,
-      "Move one medium change into two smaller production deployments to reduce release batch size.",
+      "Take one medium-sized change next sprint and release it as two production deployments on separate days to reduce batch risk.",
     );
   } else if (metrics.prThroughput <= 1 && metrics.deploymentFrequency <= 1) {
     notes.push("Output is light this month, so confidence in the trend is limited.");
     pushIfMissing(
       actions,
-      "Use a two-month view in the review discussion so one quiet month does not over-shape the conclusion.",
+      "In the next team review, compare this month with the previous month before deciding any process changes.",
     );
   }
 
   if (actions.length === 0) {
     actions.push(
-      "Keep the current working rhythm and document one habit that helped this month go smoothly.",
+      "Keep the current rhythm and document one concrete team habit from this month so others can repeat it.",
     );
   }
 
