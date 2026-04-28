@@ -9,11 +9,41 @@ type ViewState = "loading" | "ready" | "error";
 type ScreenMode = "ic" | "manager";
 
 const kpiConfig = [
-  { key: "leadTimeForChangesDays", label: "Lead time for changes", suffix: "days" },
-  { key: "cycleTimeDays", label: "Cycle time", suffix: "days" },
-  { key: "bugRate", label: "Bug rate", suffix: "ratio" },
-  { key: "deploymentFrequency", label: "Deployment frequency", suffix: "deployments" },
-  { key: "prThroughput", label: "PR throughput", suffix: "merged PRs" },
+  {
+    key: "leadTimeForChangesDays",
+    label: "Lead time for changes",
+    suffix: "days",
+    what: "Average time from work start to successful production deployment.",
+    why: "Shows how quickly completed engineering work reaches users.",
+  },
+  {
+    key: "cycleTimeDays",
+    label: "Cycle time",
+    suffix: "days",
+    what: "Average time from issue in-progress to issue done.",
+    why: "Helps spot execution or handoff slowdowns within delivery.",
+  },
+  {
+    key: "bugRate",
+    label: "Bug rate",
+    suffix: "ratio",
+    what: "Escaped production bugs divided by completed issues this month.",
+    why: "Keeps quality risk visible relative to shipped output.",
+  },
+  {
+    key: "deploymentFrequency",
+    label: "Deployment frequency",
+    suffix: "deployments",
+    what: "Number of successful production deployments in the month.",
+    why: "Indicates release cadence and batching behavior.",
+  },
+  {
+    key: "prThroughput",
+    label: "PR throughput",
+    suffix: "merged PRs",
+    what: "Number of pull requests merged in the month.",
+    why: "Shows how consistently code changes move through review.",
+  },
 ] as const;
 
 function formatMonthLabel(month: string): string {
@@ -254,6 +284,8 @@ function App() {
                           {kpi.suffix}
                         </span>
                       </p>
+                      <p className="mt-3 text-xs leading-5 text-slate-600">{kpi.what}</p>
+                      <p className="mt-1 text-xs leading-5 text-slate-600">{kpi.why}</p>
                     </article>
                   ))}
                 </section>
