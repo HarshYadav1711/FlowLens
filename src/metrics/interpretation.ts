@@ -5,6 +5,19 @@ export type MetricInterpretation = {
   nextSteps: string[];
 };
 
+function toCohesiveNarrative(notes: string[]): string {
+  if (notes.length === 0) {
+    return "";
+  }
+  if (notes.length === 1) {
+    return notes[0];
+  }
+  if (notes.length === 2) {
+    return `${notes[0]} ${notes[1]}`;
+  }
+  return `${notes[0]} ${notes[1]} ${notes.slice(2).join(" ")}`;
+}
+
 function pushIfMissing(values: string[], value: string): void {
   if (!values.includes(value)) {
     values.push(value);
@@ -27,7 +40,7 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
 
   if (metrics.cycleTimeDays >= 4 && metrics.leadTimeForChangesDays >= 4) {
     notes.push(
-      "Delivery looks slow overall, with delay likely between in-progress work and production release.",
+      "Delivery looks slower than expected this month, with delay likely building between in-progress work and production release.",
     );
     pushIfMissing(
       actions,
@@ -35,7 +48,7 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
     );
   } else if (metrics.cycleTimeDays >= 4 && metrics.leadTimeForChangesDays < 4) {
     notes.push(
-      "Work slows down during implementation, while release after merge looks comparatively steady.",
+      "The main slowdown appears during implementation, while release after merge looks comparatively steady.",
     );
     pushIfMissing(
       actions,
@@ -50,12 +63,12 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
       "Review one recent merged PR timeline with CI/deployment steps and remove the biggest recurring wait.",
     );
   } else {
-    notes.push("Flow looks steady, with cycle and lead time both in a manageable range.");
+    notes.push("Flow looks steady, with both cycle time and lead time in a manageable range.");
   }
 
   if (metrics.bugRate >= 0.3) {
     notes.push(
-      "Quality risk is visible this month because escaped production bugs are high relative to completed issue volume.",
+      "Quality is also a concern because escaped production bugs are high relative to completed issue volume.",
     );
     pushIfMissing(
       actions,
@@ -73,14 +86,14 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
 
   if (metrics.deploymentFrequency <= 1 && metrics.prThroughput >= 3) {
     notes.push(
-      "PR throughput is active, but releases are infrequent, which suggests batching near deployment.",
+      "PR throughput is active, but releases are infrequent, which suggests change batching near deployment.",
     );
     pushIfMissing(
       actions,
       "Move one medium change into two smaller production deployments to reduce release batch size.",
     );
   } else if (metrics.prThroughput <= 1 && metrics.deploymentFrequency <= 1) {
-    notes.push("Output is light this month, so trend confidence is limited.");
+    notes.push("Output is light this month, so confidence in the trend is limited.");
     pushIfMissing(
       actions,
       "Use a two-month view in the review discussion so one quiet month does not over-shape the conclusion.",
@@ -94,7 +107,7 @@ export function interpretAssignmentMetrics(metrics: AssignmentMetrics): MetricIn
   }
 
   return {
-    explanation: notes.join(" "),
+    explanation: toCohesiveNarrative(notes),
     nextSteps: actions.slice(0, 2),
   };
 }

@@ -11,8 +11,8 @@ describe("interpretAssignmentMetrics", () => {
       prThroughput: 4,
     });
 
-    expect(result.explanation).toContain("Delivery looks slow overall");
-    expect(result.explanation).toContain("Quality risk is visible");
+    expect(result.explanation).toContain("Delivery looks slower than expected");
+    expect(result.explanation).toContain("Quality is also a concern");
     expect(result.nextSteps.length).toBeGreaterThanOrEqual(1);
     expect(result.nextSteps.length).toBeLessThanOrEqual(2);
   });
