@@ -1,57 +1,137 @@
-# FlowLens (Skeleton Stage)
+# FlowLens
 
-FlowLens is currently in the data-foundation stage for the internship assignment.  
-This repo intentionally includes only the contracts + normalization pipeline required for the IC flow.
+FlowLens is a focused internship-assessment prototype for developer productivity review.
 
-## Scope guardrails applied
+## Problem in plain English
 
-- No UI implementation beyond a placeholder.
-- No extra product features outside assignment scope.
-- No paid APIs, card-required services, or hidden dependencies.
-- Metric definitions are untouched at this stage.
+Engineering managers and developers both need a quick way to answer:
 
-## Repo structure
+- How did one developer's month go?
+- Where is delivery slowing down?
+- Is quality at risk?
+- What is one practical next action?
 
-- `src/contracts/workbook.ts`  
-  Raw workbook schemas (input contract) with only required fields.
-- `src/contracts/normalized.ts`  
-  Normalized API-ready schemas (output contract).
-- `src/pipeline/normalizeWorkbook.ts`  
-  Pure mapping logic from workbook shape to normalized shape.
-- `scripts/lib/runNormalization.ts`  
-  Local file-based pipeline runner.
-- `scripts/normalize-workbook.ts`  
-  CLI entry to convert raw workbook JSON into normalized JSON.
-- `data/raw/workbook.sample.json`  
-  Sample workbook input.
-- `data/normalized/workbook.normalized.json`  
-  Generated normalized output.
+The assignment emphasizes product thinking over dashboard volume.  
+FlowLens is built to keep that decision path short and explainable.
 
-## Data fields retained
+## Chosen scope (and why it is narrow)
 
-- Developer identity + manager mapping:  
-  `developer_id`, `developer_name`, `team_name`, `manager_name`
-- Issue timing:  
-  `in_progress_at`, `done_at`
-- PR timing:  
-  `opened_at`, `first_review_at`, `merged_at`
-- Deployment details:  
-  `completed_at`, `status`, `environment`, `lead_time_days`
-- Bug signal:  
-  `escaped_to_prod`, `month_found`
+Primary scope is the **IC flow**:
 
-## Commands
+1. Select developer + month
+2. See five assignment metrics
+3. Read a short interpretation
+4. Get 1-2 practical next steps
+
+This keeps the MVP aligned with the rubric and avoids feature sprawl.
+
+A **minimal manager summary** is included only as a secondary extension, not as a second product.
+
+## Data model used
+
+Workbook-aligned entities (normalized locally):
+
+- `developers`
+- `issues`
+- `pullRequests`
+- `deployments`
+- `bugs`
+
+Retained fields are intentionally limited to assignment needs:
+
+- Developer identity and team mapping
+- Issue `inProgressAt`, `doneAt`
+- PR `openedAt`, `firstReviewAt`, `mergedAt`
+- Deployment `completedAt`, `status`, `environment`, `leadTimeDays`
+- Bug `escapedToProd`, `monthFound`
+
+## Metric definitions implemented
+
+All five are deterministic and month/developer filtered explicitly:
+
+1. **Lead time for changes**  
+   Average `leadTimeDays` of successful production deployments in selected month.
+2. **Cycle time**  
+   Average time from issue `inProgressAt` to `doneAt` for issues done in selected month.
+3. **Bug rate**  
+   `(escaped bugs / total bugs) * 100` for selected developer and month.
+4. **Deployment frequency**  
+   Count of successful production deployments in selected month.
+5. **PR throughput**  
+   Count of merged PRs in selected month.
+
+Empty inputs and division-by-zero cases return safe zero values.
+
+## Interpretation logic
+
+Interpretation is rule-based (not LLM-generated at runtime):
+
+- Detects likely delay location (implementation vs post-merge release path)
+- Flags quality concern based on bug-rate thresholds
+- Adds 1-2 concrete follow-up actions
+- Keeps language constructive and short for one-glance reading
+
+Manager summary uses a compact team rollup with a health signal and one support note.
+
+## Stack choices
+
+- React 18 + Vite + TypeScript
+- Tailwind CSS (utility-first styling, low overhead)
+- Zod (data contract validation)
+- Vitest (unit tests for normalization, metrics, interpretation, and manager rollup)
+- Local JSON data pipeline (no external services)
+
+No paid APIs, billing dependencies, or cloud services are required.
+
+## Responsible AI usage
+
+AI was used as a development assistant for drafting code structure and copy variations.  
+Final metric math, rule thresholds, and product trade-offs were manually reviewed and adjusted for explainability.
+
+Guardrails followed:
+
+- No hidden model-dependent runtime behavior
+- No fabricated external claims
+- No replacing assignment definitions with alternate internet definitions
+
+## Accessibility and defensive behavior
+
+- Loading, empty, and error states are explicit
+- Form controls are labeled and keyboard-friendly
+- View switch exposes selected state
+- Missing data paths fail safely with readable fallback copy
+
+## Demo flow (5-10 minutes, rubric-aligned)
+
+1. Start in IC view and state the scope decision.
+2. Pick a developer and month with mixed signals.
+3. Walk through the five metrics quickly.
+4. Explain interpretation sentence and why actions are practical.
+5. Switch to manager summary and show compact team/month rollup.
+6. Close with design trade-off: depth in one flow over broad dashboard coverage.
+
+## Run locally
 
 ```bash
 npm install
 npm run normalize:data
-npm run test
-npm run lint
-npm run format:check
+npm run dev
 ```
 
-## Replace sample data with workbook export
+## Validation commands
 
-1. Put workbook-converted JSON into `data/raw/workbook.sample.json` (or change the input path in script).
-2. Keep field names consistent with `src/contracts/workbook.ts`.
-3. Run `npm run normalize:data` to regenerate output.
+```bash
+npm run test
+npm run lint
+npm run build
+```
+
+## Key files
+
+- `src/App.tsx` - IC flow + minimal manager summary UI
+- `src/metrics/assignmentMetrics.ts` - deterministic metric math
+- `src/metrics/interpretation.ts` - rule-based narrative + next steps
+- `src/metrics/managerSummary.ts` - compact team/month rollup
+- `src/contracts/workbook.ts` - raw workbook contract
+- `src/contracts/normalized.ts` - normalized contract
+- `src/pipeline/normalizeWorkbook.ts` - normalization logic

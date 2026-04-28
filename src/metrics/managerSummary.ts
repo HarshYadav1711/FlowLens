@@ -35,16 +35,37 @@ export function summarizeTeamMonth(
     calculateAssignmentMetrics(workbook, developer.developerId, month),
   );
 
+  if (teamDevelopers.length === 0) {
+    return {
+      teamName,
+      month,
+      activeDevelopers: 0,
+      avgLeadTimeDays: 0,
+      avgCycleTimeDays: 0,
+      avgBugRatePercent: 0,
+      healthSignal: "Watch",
+      helpNote:
+        "No developers are mapped to this team in the dataset. Check team mapping before reviewing health.",
+    };
+  }
+
   const activeDevelopers = teamMetrics.filter(
     (metrics) => metrics.prThroughput > 0 || metrics.deploymentFrequency > 0,
   ).length;
 
-  const avgLeadTimeDays = roundToSingleDecimal(average(teamMetrics.map((metrics) => metrics.leadTimeForChangesDays)));
-  const avgCycleTimeDays = roundToSingleDecimal(average(teamMetrics.map((metrics) => metrics.cycleTimeDays)));
-  const avgBugRatePercent = roundToSingleDecimal(average(teamMetrics.map((metrics) => metrics.bugRatePercent)));
+  const avgLeadTimeDays = roundToSingleDecimal(
+    average(teamMetrics.map((metrics) => metrics.leadTimeForChangesDays)),
+  );
+  const avgCycleTimeDays = roundToSingleDecimal(
+    average(teamMetrics.map((metrics) => metrics.cycleTimeDays)),
+  );
+  const avgBugRatePercent = roundToSingleDecimal(
+    average(teamMetrics.map((metrics) => metrics.bugRatePercent)),
+  );
 
   let healthSignal: ManagerSummary["healthSignal"] = "On track";
-  let helpNote = "No immediate risk is visible. Keep the team rhythm and review one improvement each sprint.";
+  let helpNote =
+    "No immediate risk is visible. Keep the team rhythm and review one improvement each sprint.";
 
   if (avgBugRatePercent >= 30 || avgLeadTimeDays >= 4.5 || avgCycleTimeDays >= 4.5) {
     healthSignal = "Needs support";
@@ -58,7 +79,8 @@ export function summarizeTeamMonth(
 
   if (activeDevelopers === 0) {
     healthSignal = "Watch";
-    helpNote = "Delivery activity is low this month. Confirm data completeness before making team-level decisions.";
+    helpNote =
+      "Delivery activity is low this month. Confirm data completeness before making team-level decisions.";
   }
 
   return {

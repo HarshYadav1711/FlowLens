@@ -46,7 +46,8 @@ function filterIssuesByDeveloperAndMonth(
   month: string,
 ): IssueFact[] {
   return issues.filter(
-    (issue) => issue.developerId === developerId && getMonthFromIsoTimestamp(issue.doneAt) === month,
+    (issue) =>
+      issue.developerId === developerId && getMonthFromIsoTimestamp(issue.doneAt) === month,
   );
 }
 
@@ -74,7 +75,11 @@ function filterDeploymentsByDeveloperAndMonth(
   );
 }
 
-function filterBugsByDeveloperAndMonth(bugs: BugFact[], developerId: string, month: string): BugFact[] {
+function filterBugsByDeveloperAndMonth(
+  bugs: BugFact[],
+  developerId: string,
+  month: string,
+): BugFact[] {
   return bugs.filter((bug) => bug.developerId === developerId && bug.monthFound === month);
 }
 
@@ -87,13 +92,21 @@ export function calculateLeadTimeForChangesDays(
   return roundToSingleDecimal(average(rows.map((row) => row.leadTimeDays)));
 }
 
-export function calculateCycleTimeDays(issues: IssueFact[], developerId: string, month: string): number {
+export function calculateCycleTimeDays(
+  issues: IssueFact[],
+  developerId: string,
+  month: string,
+): number {
   const rows = filterIssuesByDeveloperAndMonth(issues, developerId, month);
   const cycleTimes = rows.map((row) => daysBetween(row.inProgressAt, row.doneAt));
   return roundToSingleDecimal(average(cycleTimes));
 }
 
-export function calculateBugRatePercent(bugs: BugFact[], developerId: string, month: string): number {
+export function calculateBugRatePercent(
+  bugs: BugFact[],
+  developerId: string,
+  month: string,
+): number {
   const rows = filterBugsByDeveloperAndMonth(bugs, developerId, month);
   if (rows.length === 0) {
     return 0;
@@ -124,7 +137,11 @@ export function calculateAssignmentMetrics(
   month: string,
 ): AssignmentMetrics {
   return {
-    leadTimeForChangesDays: calculateLeadTimeForChangesDays(workbook.deployments, developerId, month),
+    leadTimeForChangesDays: calculateLeadTimeForChangesDays(
+      workbook.deployments,
+      developerId,
+      month,
+    ),
     cycleTimeDays: calculateCycleTimeDays(workbook.issues, developerId, month),
     bugRatePercent: calculateBugRatePercent(workbook.bugs, developerId, month),
     deploymentFrequency: calculateDeploymentFrequency(workbook.deployments, developerId, month),
