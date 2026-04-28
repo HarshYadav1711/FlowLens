@@ -27,6 +27,12 @@ export function getDeveloperById(
   return developers.find((developer) => developer.developerId === developerId);
 }
 
+export function listTeams(workbook: NormalizedWorkbook): string[] {
+  const teams = new Set<string>();
+  workbook.developers.forEach((developer) => teams.add(developer.team));
+  return Array.from(teams).sort((a, b) => a.localeCompare(b));
+}
+
 export async function loadWorkbook(): Promise<NormalizedWorkbook> {
   await new Promise((resolve) => setTimeout(resolve, 350));
   return normalizedWorkbookSchema.parse(normalizedWorkbookJson);
