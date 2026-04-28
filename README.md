@@ -50,11 +50,12 @@ Retained fields are intentionally limited to assignment needs:
 All five are deterministic and month/developer filtered explicitly:
 
 1. **Lead time for changes**  
-   Average `leadTimeDays` of successful production deployments in selected month.
+   Average lead time for successful production deployments in the selected month.  
+   Uses precomputed `leadTimeDays` when available; if missing, falls back to `PR openedAt -> first successful deployment after merge`.
 2. **Cycle time**  
    Average time from issue `inProgressAt` to `doneAt` for issues done in selected month.
 3. **Bug rate**  
-   `(escaped bugs / total bugs) * 100` for selected developer and month.
+   `escaped production bugs / completed issues` in the same selected month.
 4. **Deployment frequency**  
    Count of successful production deployments in selected month.
 5. **PR throughput**  
@@ -78,7 +79,7 @@ Manager summary uses a compact team rollup with a health signal and one support 
 - React 18 + Vite + TypeScript
 - Tailwind CSS (utility-first styling, low overhead)
 - Zod (data contract validation)
-- Vitest (unit tests for normalization, metrics, interpretation, and manager rollup)
+- Vitest (basic unit tests for normalization and metrics logic, including interpretation and manager rollup)
 - Local JSON data pipeline (no external services)
 
 No paid APIs, billing dependencies, or cloud services are required.
