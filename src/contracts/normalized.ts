@@ -46,4 +46,9 @@ export const normalizedWorkbookSchema = z.object({
   bugs: z.array(bugFactSchema),
 });
 
+export type DeveloperDimension = z.infer<typeof developerDimensionSchema>;
+export type IssueFact = z.infer<typeof issueFactSchema>;
+export type PullRequestFact = z.infer<typeof pullRequestFactSchema>;
+export type DeploymentFact = z.infer<typeof deploymentFactSchema>;
+export type BugFact = z.infer<typeof bugFactSchema>;
 export type NormalizedWorkbook = z.infer<typeof normalizedWorkbookSchema>;
