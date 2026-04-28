@@ -69,6 +69,23 @@ function formatMonthLabel(month: string): string {
   return `${monthNames[monthIndex]} ${year}`;
 }
 
+function getPrimaryBottleneckLabel(
+  leadTimeForChangesDays: number,
+  cycleTimeDays: number,
+  bugRate: number,
+): string {
+  if (bugRate >= 0.3) {
+    return "Quality issues";
+  }
+  if (cycleTimeDays >= 4.5) {
+    return "Execution speed";
+  }
+  if (leadTimeForChangesDays >= 4 && cycleTimeDays < 4.5) {
+    return "Review or deployment delay";
+  }
+  return "No major bottleneck";
+}
+
 function App() {
   const [state, setState] = useState<ViewState>("loading");
   const [errorMessage, setErrorMessage] = useState("Unable to load workbook data.");
@@ -122,6 +139,14 @@ function App() {
     () => (metrics ? interpretAssignmentMetrics(metrics) : null),
     [metrics],
   );
+  const primaryBottleneck = useMemo(() => {
+    if (!metrics) return null;
+    return getPrimaryBottleneckLabel(
+      metrics.leadTimeForChangesDays,
+      metrics.cycleTimeDays,
+      metrics.bugRate,
+    );
+  }, [metrics]);
 
   const managerSummary = useMemo(() => {
     if (!workbook || !selectedTeam || !selectedMonth) return null;
@@ -292,7 +317,10 @@ function App() {
 
                 <section className="grid gap-4 md:grid-cols-5">
                   <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:col-span-3">
-                    <h2 className="text-base font-semibold text-slate-900">Interpretation</h2>
+                    <p className="text-sm font-medium text-indigo-700">
+                      Biggest bottleneck this month: {primaryBottleneck}
+                    </p>
+                    <h2 className="mt-2 text-base font-semibold text-slate-900">Interpretation</h2>
                     <p className="mt-3 text-sm leading-6 text-slate-700">
                       {interpretation.explanation}
                     </p>
