@@ -129,6 +129,25 @@ function App() {
     if (!workbook || !selectedDeveloperId || !selectedMonth) return null;
     return calculateAssignmentMetrics(workbook, selectedDeveloperId, selectedMonth);
   }, [selectedDeveloperId, selectedMonth, workbook]);
+  const hasActivityForSelection = useMemo(() => {
+    if (!workbook || !selectedDeveloperId || !selectedMonth) return false;
+
+    const monthMatches = (value: string) => value.slice(0, 7) === selectedMonth;
+    const hasIssue = workbook.issues.some(
+      (item) => item.developerId === selectedDeveloperId && monthMatches(item.doneAt),
+    );
+    const hasPullRequest = workbook.pullRequests.some(
+      (item) => item.developerId === selectedDeveloperId && monthMatches(item.mergedAt),
+    );
+    const hasDeployment = workbook.deployments.some(
+      (item) => item.developerId === selectedDeveloperId && monthMatches(item.completedAt),
+    );
+    const hasBug = workbook.bugs.some(
+      (item) => item.developerId === selectedDeveloperId && item.monthFound === selectedMonth,
+    );
+
+    return hasIssue || hasPullRequest || hasDeployment || hasBug;
+  }, [workbook, selectedDeveloperId, selectedMonth]);
 
   const interpretation = useMemo(
     () => (metrics ? interpretAssignmentMetrics(metrics) : null),
@@ -283,6 +302,13 @@ function App() {
               >
                 Select a developer and month with available records to view metrics and
                 interpretation.
+              </section>
+            ) : !hasActivityForSelection ? (
+              <section
+                aria-live="polite"
+                className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-600 shadow-sm"
+              >
+                No activity for this developer in this month. Try another selection.
               </section>
             ) : (
               <>
